@@ -18,10 +18,6 @@ public class VoidListener implements Listener {
 
     @EventHandler
     public void onEntityPortal(EntityPortalEvent event) {
-        if (event.getPortalType() == org.bukkit.event.entity.EntityPortalEvent.PortalType.ENDER) {
-            return;
-        }
-
         Entity entity = event.getEntity();
         if (entity instanceof Item item) {
             plugin.getRecycleManager().addItem(item, "void");

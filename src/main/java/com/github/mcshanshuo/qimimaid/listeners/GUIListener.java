@@ -5,7 +5,6 @@ import com.github.mcshanshuo.qimimaid.QimiMaid;
 import com.github.mcshanshuo.qimimaid.gui.CategoryGUI;
 import com.github.mcshanshuo.qimimaid.gui.RecycleGUI;
 import com.github.mcshanshuo.qimimaid.gui.TrashCanGUI;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,11 +37,21 @@ public class GUIListener implements Listener {
         }
 
         Inventory inventory = event.getInventory();
-        String title = ChatColor.stripColor(inventory.getType() == org.bukkit.inventory.InventoryType.CHEST ? 
-                inventory.getTitle() : "");
 
-        if (title != null && title.contains("回收站")) {
-            if (title.contains("分类")) {
+        if (inventory instanceof org.bukkit.inventory.PlayerInventory) {
+            return;
+        }
+
+        String title = "";
+        try {
+            title = inventory.getHolder() != null ? inventory.getHolder().getClass().getSimpleName() : "";
+        } catch (Exception e) {
+            title = "";
+        }
+
+        String viewTitle = event.getView().getTitle();
+        if (viewTitle.contains("回收站")) {
+            if (viewTitle.contains("分类")) {
                 CategoryGUI categoryGUI = categoryGUIs.get(player.getUniqueId());
                 if (categoryGUI != null) {
                     categoryGUI.handleClick(event);
@@ -53,7 +62,7 @@ public class GUIListener implements Listener {
                     recycleGUI.handleClick(event);
                 }
             }
-        } else if (title != null && title.contains("垃圾桶")) {
+        } else if (viewTitle.contains("垃圾桶")) {
             TrashCanGUI trashCanGUI = trashCanGUIs.get(player.getUniqueId());
             if (trashCanGUI != null) {
                 trashCanGUI.handleClick(event);

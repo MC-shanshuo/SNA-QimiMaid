@@ -26,6 +26,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+    
     - name: Get version from pom.xml
       id: get-version
       run: |
@@ -33,9 +36,6 @@ jobs:
         JAR_NAME=$(ls target/*.jar 2>/dev/null | head -1 || echo "QimiMaid-${VERSION}.jar")
         echo "version=${VERSION}" >> $GITHUB_OUTPUT
         echo "jar-name=$(basename ${JAR_NAME})" >> $GITHUB_OUTPUT
-    
-    - name: Build with Maven
-      run: mvn clean package -DskipTests
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4

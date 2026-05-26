@@ -1,14 +1,16 @@
-
 package com.github.mcshanshuo.qimimaid.utils;
 
 import com.github.mcshanshuo.qimimaid.QimiMaid;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +18,29 @@ public class MessageManager {
 
     private final QimiMaid plugin;
     private Map<String, String> messages;
+    private FileConfiguration messagesConfig;
+    private File messagesFile;
 
     public MessageManager(QimiMaid plugin) {
         this.plugin = plugin;
         this.messages = new HashMap<>();
+        setupMessagesFile();
         loadMessages();
+    }
+
+    private void setupMessagesFile() {
+        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) {
+            plugin.saveResource("messages.yml", false);
+        }
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        
+        InputStream defConfigStream = plugin.getResource("messages.yml");
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(
+                new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
+            messagesConfig.setDefaults(defConfig);
+        }
     }
 
     private void loadMessages() {
@@ -61,16 +81,16 @@ public class MessageManager {
     }
 
     private String getMessage(String path) {
-        String message = plugin.getConfig().getString(path);
+        String message = messagesConfig.getString(path);
         if (message == null) {
             return path;
         }
-        message = message.replace("%prefix%", plugin.getConfig().getString("prefix", ""));
+        message = message.replace("%prefix%", messagesConfig.getString("prefix", ""));
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public void reload() {
-        plugin.reloadConfig();
+        setupMessagesFile();
         loadMessages();
     }
 
@@ -92,18 +112,5 @@ public class MessageManager {
 
     public void sendMessage(CommandSender sender, String key, Map<String, String> placeholders) {
         sender.sendMessage(get(key, placeholders));
-    }
-
-    public Component getComponent(String key) {
-        return Component.text(get(key));
-    }
-
-    public TextComponent getTextComponent(String key) {
-        return Component.text(get(key));
-    }
-
-    public Component getColoredComponent(String key) {
-        String text = get(key);
-        return Component.text(text);
     }
 }

@@ -12,6 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      jar-name: ${{ steps.get-version.outputs.jar-name }}
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -22,6 +26,14 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
+    - name: Get version from pom.xml
+      id: get-version
+      run: |
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        JAR_NAME=$(ls target/*.jar 2>/dev/null | head -1 || echo "QimiMaid-${VERSION}.jar")
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        echo "jar-name=$(basename ${JAR_NAME})" >> $GITHUB_OUTPUT
+    
     - name: Build with Maven
       run: mvn clean package -DskipTests
     
@@ -31,7 +43,7 @@ jobs:
         name: QimiMaid
         path: target/QimiMaid-*.jar
 
-  release:
+  release-tag:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
@@ -47,8 +59,46 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         files: QimiMaid-*.jar
         draft: false
-        prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+        prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') || contains(needs.build.outputs.version, 'beta') || contains(needs.build.outputs.version, 'alpha') }}
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  pre-release-on-push:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: QimiMaid
+    
+    - name: Delete old pre-release
+      uses: dev-drprasad/delete-older-releases@v0.3.2
+      with:
+        keep_latest: 0
+        delete_tags: true
+        delete_tag_pattern: latest-pre-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+    
+    - name: Create/update pre-release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: latest-pre-release
+        name: Development Pre-release (${{ github.sha }})
+        files: QimiMaid-*.jar
+        draft: false
+        prerelease: true
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

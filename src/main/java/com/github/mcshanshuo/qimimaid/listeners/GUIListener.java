@@ -42,30 +42,30 @@ public class GUIListener implements Listener {
             return;
         }
 
-        String title = "";
-        try {
-            title = inventory.getHolder() != null ? inventory.getHolder().getClass().getSimpleName() : "";
-        } catch (Exception e) {
-            title = "";
-        }
-
         String viewTitle = event.getView().getTitle();
+        
         if (viewTitle.contains("回收站")) {
             if (viewTitle.contains("分类")) {
                 CategoryGUI categoryGUI = categoryGUIs.get(player.getUniqueId());
                 if (categoryGUI != null) {
                     categoryGUI.handleClick(event);
+                } else {
+                    event.setCancelled(true);
                 }
             } else {
                 RecycleGUI recycleGUI = recycleGUIs.get(player.getUniqueId());
                 if (recycleGUI != null) {
                     recycleGUI.handleClick(event);
+                } else {
+                    event.setCancelled(true);
                 }
             }
         } else if (viewTitle.contains("垃圾桶")) {
             TrashCanGUI trashCanGUI = trashCanGUIs.get(player.getUniqueId());
             if (trashCanGUI != null) {
                 trashCanGUI.handleClick(event);
+            } else {
+                event.setCancelled(true);
             }
         }
     }

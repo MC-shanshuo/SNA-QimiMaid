@@ -35,8 +35,19 @@ public class CategoryGUI {
         this.plugin = plugin;
         this.player = player;
         this.inventory = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&b回收站分类"));
+        registerGUI();
         populateInventory();
         player.openInventory(inventory);
+    }
+
+    private void registerGUI() {
+        org.bukkit.plugin.PluginManager pm = plugin.getServer().getPluginManager();
+        for (org.bukkit.event.Listener listener : pm.getPluginListeners(plugin)) {
+            if (listener instanceof com.github.mcshanshuo.qimimaid.listeners.GUIListener) {
+                ((com.github.mcshanshuo.qimimaid.listeners.GUIListener) listener).addCategoryGUI(player, this);
+                break;
+            }
+        }
     }
 
     private void populateInventory() {

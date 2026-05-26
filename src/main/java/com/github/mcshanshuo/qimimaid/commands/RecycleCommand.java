@@ -30,7 +30,7 @@ public class RecycleCommand implements CommandExecutor {
             return true;
         }
 
-        new RecycleGUI(plugin, player);
+        RecycleGUI gui = new RecycleGUI(plugin, player);
         plugin.getMessageManager().sendMessage(player, "recycle.opened");
 
         return true;

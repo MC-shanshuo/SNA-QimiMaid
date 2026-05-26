@@ -27,6 +27,7 @@ public class RecycleGUI {
         this.player = player;
         this.currentPage = 1;
         this.items = new ArrayList<>(plugin.getRecycleManager().getItems());
+        registerGUI();
         openGUI();
     }
 
@@ -35,7 +36,18 @@ public class RecycleGUI {
         this.player = player;
         this.currentPage = 1;
         this.items = filteredItems;
+        registerGUI();
         openGUI();
+    }
+
+    private void registerGUI() {
+        org.bukkit.plugin.PluginManager pm = plugin.getServer().getPluginManager();
+        for (org.bukkit.event.Listener listener : pm.getPluginListeners(plugin)) {
+            if (listener instanceof com.github.mcshanshuo.qimimaid.listeners.GUIListener) {
+                ((com.github.mcshanshuo.qimimaid.listeners.GUIListener) listener).addRecycleGUI(player, this);
+                break;
+            }
+        }
     }
 
     private void openGUI() {

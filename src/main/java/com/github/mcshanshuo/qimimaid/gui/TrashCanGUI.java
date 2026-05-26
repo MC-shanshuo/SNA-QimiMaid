@@ -25,8 +25,19 @@ public class TrashCanGUI {
         this.player = player;
         String title = plugin.getConfigManager().getTrashCanTitle();
         this.inventory = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', title));
+        registerGUI();
         populateInventory();
         player.openInventory(inventory);
+    }
+
+    private void registerGUI() {
+        org.bukkit.plugin.PluginManager pm = plugin.getServer().getPluginManager();
+        for (org.bukkit.event.Listener listener : pm.getPluginListeners(plugin)) {
+            if (listener instanceof com.github.mcshanshuo.qimimaid.listeners.GUIListener) {
+                ((com.github.mcshanshuo.qimimaid.listeners.GUIListener) listener).addTrashCanGUI(player, this);
+                break;
+            }
+        }
     }
 
     private void populateInventory() {
@@ -59,10 +70,11 @@ public class TrashCanGUI {
     }
 
     public void handleClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+        
         int slot = event.getSlot();
         
         if (slot == 26) {
-            event.setCancelled(true);
             clearInventory();
             plugin.getMessageManager().sendMessage(player, "trashcan.cleared");
             populateInventory();
@@ -73,7 +85,6 @@ public class TrashCanGUI {
             ItemStack item = event.getCurrentItem();
             if (item != null && item.getType() != Material.GRAY_STAINED_GLASS_PANE) {
                 plugin.getRecycleManager().addItemStack(item, "normal");
-                event.setCancelled(true);
                 inventory.setItem(slot, createEmptySlot());
             }
         }

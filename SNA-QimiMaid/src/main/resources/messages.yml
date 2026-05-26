@@ -1,0 +1,43 @@
+
+prefix: "&b[QimiMaid] &r"
+
+no-permission: "%prefix%&c您没有权限执行此命令！"
+no-player: "%prefix%&c此命令只能由玩家执行！"
+invalid-command: "%prefix%&c无效的命令！使用 /qimimaid help 获取帮助。"
+reload-success: "%prefix%&a配置文件已重新加载！"
+
+clean:
+  warning: "%prefix%&e警告！&r扫地娘将在 &6%time%秒&r 后清理掉落物和怪物！"
+  cleaned: "%prefix%&a扫地娘已完成清理！共清理 &6%items%&a 个掉落物和 &6%mobs%&a 个怪物。"
+  disabled: "%prefix%&c自动清理功能已禁用！"
+
+recycle:
+  opened: "%prefix%&a已打开回收站！"
+  buy-success: "%prefix%&a成功购买物品！花费 &6%price%&a 金币。"
+  buy-failed: "%prefix%&c金币不足！需要 &6%price%&c 金币。"
+  item-given: "%prefix%&a物品已放入您的背包！"
+  inventory-full: "%prefix%&c您的背包已满！"
+  empty: "%prefix%&c回收站为空！"
+  auto-clean: "%prefix%&e回收站已自动清理！"
+  category-normal: "&a普通清理"
+  category-void: "&c虚空掉落"
+  category-fire: "&e被烧毁"
+  category-cactus: "&2仙人掌摧毁"
+  category-mob-drop: "&d生物掉落"
+  category-despawn: "&6自动消失"
+
+trashcan:
+  opened: "%prefix%&a已打开垃圾桶！"
+  cleared: "%prefix%&a垃圾桶已清空！"
+
+gui:
+  back: "&c返回"
+  next: "&e下一页"
+  previous: "&e上一页"
+  close: "&c关闭"
+  buy: "&a购买"
+  category: "&b分类"
+  price: "&6价格: %price% 金币"
+  origin: "&e来源: %origin%"
+  amount: "&7数量: %amount%"
+  valuable: "&d贵重物品"

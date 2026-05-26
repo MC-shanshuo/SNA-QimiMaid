@@ -1,0 +1,40 @@
+
+name: QimiMaid
+version: ${project.version}
+main: com.github.mcshanshuo.qimimaid.QimiMaid
+api-version: '1.21'
+prefix: QimiMaid
+description: 我的世界服务器扫地娘插件 - 自动清理掉落物和怪物，并提供回收站功能
+authors: [MC-shanshuo]
+website: https://github.com/MC-shanshuo/SNA-QimiMaid
+
+depend: [Vault]
+softdepend: []
+
+commands:
+  qimimaid:
+    description: QimiMaid插件主命令
+    aliases: [qm, maid]
+    permission: qimimaid.admin
+  trashcan:
+    description: 打开垃圾桶
+    aliases: [tc, trash]
+    permission: qimimaid.trashcan
+  recycle:
+    description: 打开回收站
+    aliases: [rc, recyclebin]
+    permission: qimimaid.recycle
+
+permissions:
+  qimimaid.admin:
+    description: 允许使用管理员命令
+    default: op
+  qimimaid.trashcan:
+    description: 允许使用垃圾桶功能
+    default: true
+  qimimaid.recycle:
+    description: 允许使用回收站功能
+    default: true
+  qimimaid.recycle.buy:
+    description: 允许购买回收站物品
+    default: true

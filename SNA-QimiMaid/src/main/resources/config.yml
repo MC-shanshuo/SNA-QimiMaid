@@ -1,0 +1,101 @@
+
+clean:
+  interval: 300
+  warning-time: 30
+  enabled: true
+  
+mobs:
+  enabled: true
+  types:
+    - ZOMBIE
+    - SKELETON
+    - CREEPER
+    - SPIDER
+    - ENDERMAN
+    - WITCH
+    - BLAZE
+    - GHAST
+    - PIGLIN
+    - HOGLIN
+    - STRIDER
+    - ZOMBIFIED_PIGLIN
+    - DROWNED
+    - HUSK
+    - PHANTOM
+    - SILVERFISH
+    - CAVE_SPIDER
+    - ENDERMITE
+    - VEX
+    - EVOKER
+    - VINDICATOR
+    - PILLAGER
+    - RAVAGER
+    - SHULKER
+    - GUARDIAN
+    - ELDER_GUARDIAN
+    - WITHER_SKELETON
+    - STRAY
+    - ZOGLIN
+
+recycle:
+  enabled: true
+  auto-clean-interval: 86400
+  max-items: 10000
+  price-multiplier: 0.5
+  valuable-multiplier: 2.0
+  valuable-items:
+    - DIAMOND
+    - DIAMOND_SWORD
+    - DIAMOND_PICKAXE
+    - DIAMOND_AXE
+    - DIAMOND_SHOVEL
+    - DIAMOND_HOE
+    - DIAMOND_HELMET
+    - DIAMOND_CHESTPLATE
+    - DIAMOND_LEGGINGS
+    - DIAMOND_BOOTS
+    - NETHERITE_INGOT
+    - NETHERITE_SWORD
+    - NETHERITE_PICKAXE
+    - NETHERITE_AXE
+    - NETHERITE_SHOVEL
+    - NETHERITE_HOE
+    - NETHERITE_HELMET
+    - NETHERITE_CHESTPLATE
+    - NETHERITE_LEGGINGS
+    - NETHERITE_BOOTS
+    - EMERALD
+    - GOLD_INGOT
+    - IRON_INGOT
+    - ENCHANTED_GOLDEN_APPLE
+    - DRAGON_EGG
+    - NETHER_STAR
+    - BEACON
+    - SHULKER_BOX
+    - ENCHANTED_BOOK
+
+categories:
+  normal:
+    name: "&a普通清理"
+    enabled: true
+  void:
+    name: "&c虚空掉落"
+    enabled: true
+  fire:
+    name: "&e被烧毁"
+    enabled: true
+  cactus:
+    name: "&2仙人掌摧毁"
+    enabled: true
+  mob-drop:
+    name: "&d生物掉落"
+    enabled: true
+  despawn:
+    name: "&6自动消失"
+    enabled: true
+
+gui:
+  title: "&b回收站 - 第 %page% 页"
+  rows: 6
+  items-per-page: 45
+  trashcan-title: "&c垃圾桶"
